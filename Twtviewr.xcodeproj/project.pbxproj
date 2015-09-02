@@ -10,11 +10,16 @@
 		D681F4461B9793FF00235925 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D681F4451B9793FF00235925 /* main.m */; };
 		D681F4491B9793FF00235925 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D681F4481B9793FF00235925 /* AppDelegate.m */; };
 		D681F44C1B9793FF00235925 /* Twtviewr.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D681F44A1B9793FF00235925 /* Twtviewr.xcdatamodeld */; };
-		D681F44F1B9793FF00235925 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D681F44E1B9793FF00235925 /* ViewController.m */; };
 		D681F4521B9793FF00235925 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D681F4501B9793FF00235925 /* Main.storyboard */; };
 		D681F4541B9793FF00235925 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D681F4531B9793FF00235925 /* Images.xcassets */; };
 		D681F4571B9793FF00235925 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D681F4551B9793FF00235925 /* LaunchScreen.xib */; };
 		D681F4631B9793FF00235925 /* TwtviewrTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D681F4621B9793FF00235925 /* TwtviewrTests.m */; };
+		D681F4711B97A11B00235925 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D681F4701B97A11B00235925 /* LoginViewController.m */; };
+		D681F4741B97A31800235925 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D681F4731B97A31800235925 /* MainViewController.m */; };
+		D681F4771B97A4E100235925 /* DetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D681F4761B97A4E100235925 /* DetailsViewController.m */; };
+		D681F47A1B97A50600235925 /* NewTweetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D681F4791B97A50600235925 /* NewTweetViewController.m */; };
+		D681F47D1B97ACB300235925 /* ApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D681F47C1B97ACB300235925 /* ApiManager.m */; };
+		D681F47F1B97ADAC00235925 /* 1829.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D681F47E1B97ADAC00235925 /* 1829.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,14 +39,23 @@
 		D681F4471B9793FF00235925 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D681F4481B9793FF00235925 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		D681F44B1B9793FF00235925 /* Twtviewr.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Twtviewr.xcdatamodel; sourceTree = "<group>"; };
-		D681F44D1B9793FF00235925 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		D681F44E1B9793FF00235925 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		D681F4511B9793FF00235925 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D681F4531B9793FF00235925 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D681F4561B9793FF00235925 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		D681F45C1B9793FF00235925 /* TwtviewrTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TwtviewrTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D681F4611B9793FF00235925 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D681F4621B9793FF00235925 /* TwtviewrTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TwtviewrTests.m; sourceTree = "<group>"; };
+		D681F46F1B97A11B00235925 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		D681F4701B97A11B00235925 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		D681F4721B97A31800235925 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		D681F4731B97A31800235925 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		D681F4751B97A4E100235925 /* DetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsViewController.h; sourceTree = "<group>"; };
+		D681F4761B97A4E100235925 /* DetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsViewController.m; sourceTree = "<group>"; };
+		D681F4781B97A50600235925 /* NewTweetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewTweetViewController.h; sourceTree = "<group>"; };
+		D681F4791B97A50600235925 /* NewTweetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewTweetViewController.m; sourceTree = "<group>"; };
+		D681F47B1B97ACB300235925 /* ApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApiManager.h; sourceTree = "<group>"; };
+		D681F47C1B97ACB300235925 /* ApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiManager.m; sourceTree = "<group>"; };
+		D681F47E1B97ADAC00235925 /* 1829.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 1829.jpg; path = ../../Downloads/1829.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +82,7 @@
 				D681F4421B9793FF00235925 /* Twtviewr */,
 				D681F45F1B9793FF00235925 /* TwtviewrTests */,
 				D681F4411B9793FF00235925 /* Products */,
+				D681F47E1B97ADAC00235925 /* 1829.jpg */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,9 +100,17 @@
 			children = (
 				D681F4471B9793FF00235925 /* AppDelegate.h */,
 				D681F4481B9793FF00235925 /* AppDelegate.m */,
-				D681F44D1B9793FF00235925 /* ViewController.h */,
-				D681F44E1B9793FF00235925 /* ViewController.m */,
+				D681F46F1B97A11B00235925 /* LoginViewController.h */,
+				D681F4701B97A11B00235925 /* LoginViewController.m */,
+				D681F4721B97A31800235925 /* MainViewController.h */,
+				D681F4731B97A31800235925 /* MainViewController.m */,
+				D681F4751B97A4E100235925 /* DetailsViewController.h */,
+				D681F4761B97A4E100235925 /* DetailsViewController.m */,
+				D681F4781B97A50600235925 /* NewTweetViewController.h */,
+				D681F4791B97A50600235925 /* NewTweetViewController.m */,
 				D681F4501B9793FF00235925 /* Main.storyboard */,
+				D681F47B1B97ACB300235925 /* ApiManager.h */,
+				D681F47C1B97ACB300235925 /* ApiManager.m */,
 				D681F4531B9793FF00235925 /* Images.xcassets */,
 				D681F4551B9793FF00235925 /* LaunchScreen.xib */,
 				D681F44A1B9793FF00235925 /* Twtviewr.xcdatamodeld */,
@@ -205,6 +228,7 @@
 				D681F4521B9793FF00235925 /* Main.storyboard in Resources */,
 				D681F4571B9793FF00235925 /* LaunchScreen.xib in Resources */,
 				D681F4541B9793FF00235925 /* Images.xcassets in Resources */,
+				D681F47F1B97ADAC00235925 /* 1829.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,9 +246,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D681F4711B97A11B00235925 /* LoginViewController.m in Sources */,
 				D681F44C1B9793FF00235925 /* Twtviewr.xcdatamodeld in Sources */,
 				D681F4491B9793FF00235925 /* AppDelegate.m in Sources */,
-				D681F44F1B9793FF00235925 /* ViewController.m in Sources */,
+				D681F4771B97A4E100235925 /* DetailsViewController.m in Sources */,
+				D681F47D1B97ACB300235925 /* ApiManager.m in Sources */,
+				D681F4741B97A31800235925 /* MainViewController.m in Sources */,
+				D681F47A1B97A50600235925 /* NewTweetViewController.m in Sources */,
 				D681F4461B9793FF00235925 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -352,6 +380,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Twtviewr/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -362,6 +391,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Twtviewr/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
