@@ -7,6 +7,9 @@
 //
 
 #import "AppDelegate.h"
+#import <Social/Social.h>
+#import "LoginViewController.h"
+#import <Accounts/Accounts.h>
 
 @interface AppDelegate ()
 
@@ -17,6 +20,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    if (![SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]) {
+//        [self showLoginScreen];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Account"
+                                                        message:@"Please set up your twitter account in settings"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Okay"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    
     return YES;
 }
 
@@ -42,6 +55,15 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
+}
+
+- (void)showLoginScreen {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    LoginViewController *viewController = (LoginViewController *)[storyboard instantiateViewControllerWithIdentifier:@"LoginScene"];
+    [self.window makeKeyAndVisible];
+    [self.window.rootViewController presentViewController:viewController
+                                                 animated:NO
+                                               completion:nil];
 }
 
 #pragma mark - Core Data stack

@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewTweetViewController : UIViewController
+@protocol NewTweetViewControllerDelegate <NSObject>
+- (void)didSuccessfullyPost;
+@end
 
+@interface NewTweetViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (nonatomic, weak) id <NewTweetViewControllerDelegate> delegate;
 @end

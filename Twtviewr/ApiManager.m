@@ -10,4 +10,13 @@
 
 @implementation ApiManager
 
++ (instancetype) sharedInstance {
+    static ApiManager *sharedInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[ApiManager alloc] init];
+    });
+    return sharedInstance;
+}
+
 @end

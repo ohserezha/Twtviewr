@@ -17,6 +17,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    if (self.tweet) {
+        self.textView.text = [self.tweet description];
+    }
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"We could put useful information from tweet here but the task sounds like Отобразить всю доступную информацию по твиту, so we just put a tweet dictionary's description" delegate:nil cancelButtonTitle:@"Oookaaay" otherButtonTitles:nil];
+    [alert show];
 }
 
 - (void)didReceiveMemoryWarning {

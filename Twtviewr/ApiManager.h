@@ -7,7 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Accounts/Accounts.h>
 
 @interface ApiManager : NSObject
+
+@property (strong, nonatomic) ACAccount *twitterAccount;
+
++ (instancetype)sharedInstance;
 
 @end

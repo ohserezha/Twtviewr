@@ -29,7 +29,7 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
-                        <outlet property="view" destination="5kS-kM-eeE" id="dvE-eh-iLA"/>
+                        <outlet property="webView" destination="5kS-kM-eeE" id="kQZ-lL-UrG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WVa-sg-I0a" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -100,26 +100,40 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="New tweet here..." translatesAutoresizingMaskIntoConstraints="NO" id="N0S-Yg-BFJ">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" showsHorizontalScrollIndicator="NO" text="New tweet here..." translatesAutoresizingMaskIntoConstraints="NO" id="N0S-Yg-BFJ">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" enablesReturnKeyAutomatically="YES"/>
                             </textView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="cRa-uN-FDZ">
+                                <rect key="frame" x="141" y="266" width="37" height="37"/>
+                                <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="N0S-Yg-BFJ" secondAttribute="trailing" id="JZI-J5-eKu"/>
-                            <constraint firstItem="N0S-Yg-BFJ" firstAttribute="top" secondItem="iyB-zp-zHM" secondAttribute="top" id="PhS-XO-hEK"/>
-                            <constraint firstItem="N0S-Yg-BFJ" firstAttribute="leading" secondItem="iyB-zp-zHM" secondAttribute="leading" id="kg9-SN-6di"/>
-                            <constraint firstAttribute="bottom" secondItem="N0S-Yg-BFJ" secondAttribute="bottom" id="lwV-tL-OFR"/>
+                            <constraint firstItem="cRa-uN-FDZ" firstAttribute="leading" secondItem="iyB-zp-zHM" secondAttribute="leading" constant="141" id="Ajw-7e-LIf"/>
+                            <constraint firstItem="N0S-Yg-BFJ" firstAttribute="centerY" secondItem="cRa-uN-FDZ" secondAttribute="centerY" id="DHB-LL-UbG"/>
+                            <constraint firstItem="N0S-Yg-BFJ" firstAttribute="top" secondItem="iyB-zp-zHM" secondAttribute="top" id="R0c-k0-SmE"/>
+                            <constraint firstItem="N0S-Yg-BFJ" firstAttribute="leading" secondItem="iyB-zp-zHM" secondAttribute="leading" id="Son-vq-00z"/>
+                            <constraint firstItem="cRa-uN-FDZ" firstAttribute="centerY" secondItem="iyB-zp-zHM" secondAttribute="centerY" id="Y3U-SY-TfB"/>
+                            <constraint firstAttribute="trailing" secondItem="N0S-Yg-BFJ" secondAttribute="trailing" id="u1b-Eb-MQN"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="New Tweet" id="Gvi-P4-psI">
-                        <barButtonItem key="rightBarButtonItem" title="Send" id="YEC-Is-jMU"/>
+                        <barButtonItem key="rightBarButtonItem" title="Send" id="YEC-Is-jMU">
+                            <connections>
+                                <action selector="sendButtonTapped:" destination="E7I-6l-Frs" id="3eb-NV-Aa9"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="activityIndicator" destination="cRa-uN-FDZ" id="q6h-IR-HY1"/>
+                        <outlet property="textView" destination="N0S-Yg-BFJ" id="yfF-4k-X9l"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3hw-Kr-MN4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -140,7 +154,7 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V4r-CN-2kN">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
@@ -153,6 +167,9 @@
                             <constraint firstAttribute="trailing" secondItem="V4r-CN-2kN" secondAttribute="trailing" id="TEq-b6-5Pk"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="textView" destination="V4r-CN-2kN" id="ZMB-9l-OS2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z8F-bj-eeS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

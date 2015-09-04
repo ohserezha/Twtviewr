@@ -10,4 +10,7 @@
 
 @interface DetailsViewController : UIViewController
 
+@property (strong, nonatomic) NSDictionary *tweet;
+@property (weak, nonatomic) IBOutlet UITextView *textView;
+
 @end

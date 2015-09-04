@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D658D4711B98D3EC006CE8C4 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D658D4701B98D3EC006CE8C4 /* Accounts.framework */; };
+		D658D4731B98D3F7006CE8C4 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D658D4721B98D3F7006CE8C4 /* Social.framework */; };
 		D681F4461B9793FF00235925 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D681F4451B9793FF00235925 /* main.m */; };
 		D681F4491B9793FF00235925 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D681F4481B9793FF00235925 /* AppDelegate.m */; };
 		D681F44C1B9793FF00235925 /* Twtviewr.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D681F44A1B9793FF00235925 /* Twtviewr.xcdatamodeld */; };
@@ -19,7 +21,6 @@
 		D681F4771B97A4E100235925 /* DetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D681F4761B97A4E100235925 /* DetailsViewController.m */; };
 		D681F47A1B97A50600235925 /* NewTweetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D681F4791B97A50600235925 /* NewTweetViewController.m */; };
 		D681F47D1B97ACB300235925 /* ApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D681F47C1B97ACB300235925 /* ApiManager.m */; };
-		D681F47F1B97ADAC00235925 /* 1829.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D681F47E1B97ADAC00235925 /* 1829.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D658D4701B98D3EC006CE8C4 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		D658D4721B98D3F7006CE8C4 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		D681F4401B9793FF00235925 /* Twtviewr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Twtviewr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D681F4441B9793FF00235925 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D681F4451B9793FF00235925 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -55,7 +58,6 @@
 		D681F4791B97A50600235925 /* NewTweetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewTweetViewController.m; sourceTree = "<group>"; };
 		D681F47B1B97ACB300235925 /* ApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApiManager.h; sourceTree = "<group>"; };
 		D681F47C1B97ACB300235925 /* ApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiManager.m; sourceTree = "<group>"; };
-		D681F47E1B97ADAC00235925 /* 1829.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = 1829.jpg; path = ../../Downloads/1829.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D658D4731B98D3F7006CE8C4 /* Social.framework in Frameworks */,
+				D658D4711B98D3EC006CE8C4 /* Accounts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,13 +80,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D658D4741B98D3FE006CE8C4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D658D4721B98D3F7006CE8C4 /* Social.framework */,
+				D658D4701B98D3EC006CE8C4 /* Accounts.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D681F4371B9793FF00235925 = {
 			isa = PBXGroup;
 			children = (
 				D681F4421B9793FF00235925 /* Twtviewr */,
+				D658D4741B98D3FE006CE8C4 /* Frameworks */,
 				D681F45F1B9793FF00235925 /* TwtviewrTests */,
 				D681F4411B9793FF00235925 /* Products */,
-				D681F47E1B97ADAC00235925 /* 1829.jpg */,
 			);
 			sourceTree = "<group>";
 		};
@@ -228,7 +241,6 @@
 				D681F4521B9793FF00235925 /* Main.storyboard in Resources */,
 				D681F4571B9793FF00235925 /* LaunchScreen.xib in Resources */,
 				D681F4541B9793FF00235925 /* Images.xcassets in Resources */,
-				D681F47F1B97ADAC00235925 /* 1829.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,6 +462,7 @@
 				D681F4681B9793FF00235925 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D681F4691B9793FF00235925 /* Build configuration list for PBXNativeTarget "TwtviewrTests" */ = {
 			isa = XCConfigurationList;
@@ -458,6 +471,7 @@
 				D681F46B1B9793FF00235925 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
