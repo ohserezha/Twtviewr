@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "ApiManager.h"
 
 @interface LoginViewController ()
 
@@ -17,7 +18,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-
+    [[ApiManager sharedInstance] setWebView:self.webView];
+    [[ApiManager sharedInstance] loginViaWebView];
 }
 
 - (void)didReceiveMemoryWarning {

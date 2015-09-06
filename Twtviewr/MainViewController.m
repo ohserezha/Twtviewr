@@ -13,39 +13,19 @@
 #import "NewTweetViewController.h"
 
 @interface MainViewController () <NewTweetViewControllerDelegate>
-@property (strong, nonatomic) NSArray *tweetsArray;
+@property (strong, nonatomic) NSMutableArray *tweetsArray;
 @end
 
 @implementation MainViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    ACAccountStore *accStore = [[ACAccountStore alloc] init];
-    ACAccountType *twitterAccType = [accStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-    [accStore requestAccessToAccountsWithType:twitterAccType options:nil completion:^(BOOL granted, NSError *error) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (granted) {
-                NSArray *accountsArray = [accStore accountsWithAccountType:twitterAccType];
-                ACAccount *account = [accountsArray lastObject];
-                [[ApiManager sharedInstance] setTwitterAccount:account];
-                [self getFeedForUserAccount:account];
-            } else {
-                NSLog(@"access denied");
-            }
-            if (error) {
-                NSLog(@"Error requesting access to account occured %@", [error localizedDescription]);
-            }
-        }];
-        
-    }];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginWithBaseAccount) name:kTwitterAccountIsReadyNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -58,32 +38,23 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)getFeedForUserAccount:(ACAccount *)account {
-    NSURL* url = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/user_timeline.json"];
-    NSDictionary* params = @{@"count" : @"100", @"screen_name" : account.username};
-    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter
-                                            requestMethod:SLRequestMethodGET
-                                                      URL:url parameters:params];
-    
-    request.account = account;
-    
-    [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-        if (error) {
-            NSString* errorMessage = [NSString stringWithFormat:@"There was an error reading your Twitter feed. %@",
-                                      [error localizedDescription]];
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-            [alert show];
-        } else {
-            NSError *jsonError;
-            NSArray *responseJSON = [NSJSONSerialization
-                                     JSONObjectWithData:responseData
-                                     options:NSJSONReadingAllowFragments
-                                     error:&jsonError];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.tweetsArray = responseJSON;
-                [self.tableView reloadData];
-            });
-        }
+- (void)loadTweets {
+    // here we determine where from to load web or local
+    // will implement saving on load or applicationwillenterbackgrnd
+    ApiManager *apiMgr = [ApiManager sharedInstance];
+    [apiMgr getFeedForUserAccount:apiMgr.twitterAccount onCompletion:^(NSArray *array) {
+        self.tweetsArray = [NSMutableArray arrayWithArray:array];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    } onFailure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)loginWithBaseAccount {
+    [[ApiManager sharedInstance] loginViaBaseTwitterAccountWithCompletionBlock:^{
+        [self loadTweets];
     }];
 }
 
@@ -129,8 +100,7 @@
 #pragma mark - NewTweetViewControllerDelegate
 
 - (void)didSuccessfullyPost {
-    [self getFeedForUserAccount:[ApiManager sharedInstance].twitterAccount];
-    [self.tableView reloadData];
+    [self loadTweets];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Congratulations!"
                                                     message:@"Your tweet has been successfully posted!"
                                                    delegate:nil

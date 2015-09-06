@@ -10,6 +10,7 @@
 #import <Social/Social.h>
 #import "LoginViewController.h"
 #import <Accounts/Accounts.h>
+#import "ApiManager.h"
 
 @interface AppDelegate ()
 
@@ -21,13 +22,12 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     if (![SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]) {
-//        [self showLoginScreen];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Account"
-                                                        message:@"Please set up your twitter account in settings"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Okay"
-                                              otherButtonTitles:nil];
-        [alert show];
+        [self showLoginScreen];
+    } else {
+        NSNotification *notification = [NSNotification notificationWithName:kTwitterAccountIsReadyNotification object:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotification:notification];
+        });
     }
     
     return YES;
@@ -57,6 +57,37 @@
     [self saveContext];
 }
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    if ([[url scheme] isEqualToString:@"myapp"] == NO) return NO;
+    [[self.window.rootViewController presentedViewController] dismissViewControllerAnimated:YES completion:nil];
+    NSDictionary *tokenDict = [self parametersDictionaryFromQueryString:[url query]];
+//    NSString *token = tokenDict[@"oauth_token"];
+    NSString *verifier = tokenDict[@"oauth_verifier"];
+    [self finishLoginAndSaveNewAccountWithVerifier:verifier];
+    return YES;
+}
+
+- (void)finishLoginAndSaveNewAccountWithVerifier:(NSString *)verifier {
+    ACAccountStore *accStore = [[ACAccountStore alloc] init];
+    ACAccount *account = [[ACAccount alloc] initWithAccountType:[accStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter]];
+    [[ApiManager sharedInstance].stTwitterAPI postAccessTokenRequestWithPIN:verifier successBlock:^(NSString *oauthToken, NSString *oauthTokenSecret, NSString *userID, NSString *screenName) {
+        account.credential = [[ACAccountCredential alloc] initWithOAuthToken:oauthToken tokenSecret:oauthTokenSecret];
+        account.username = screenName;
+        [accStore saveAccount:account withCompletionHandler:^(BOOL success, NSError *error) {
+            NSNotification *notification = [NSNotification notificationWithName:kTwitterAccountIsReadyNotification object:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotification:notification];
+            });
+            if (error) {
+                NSLog(@"error %@", [error localizedDescription]);
+            }
+        }];
+    } errorBlock:^(NSError *error) {
+        NSLog(@"-- %@", [error localizedDescription]);
+    }];
+}
+
 - (void)showLoginScreen {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     LoginViewController *viewController = (LoginViewController *)[storyboard instantiateViewControllerWithIdentifier:@"LoginScene"];
@@ -64,6 +95,27 @@
     [self.window.rootViewController presentViewController:viewController
                                                  animated:NO
                                                completion:nil];
+}
+
+#pragma mark - Helpers
+
+- (NSDictionary *)parametersDictionaryFromQueryString:(NSString *)queryString {
+    
+    NSMutableDictionary *md = [NSMutableDictionary dictionary];
+    
+    NSArray *queryComponents = [queryString componentsSeparatedByString:@"&"];
+    
+    for(NSString *s in queryComponents) {
+        NSArray *pair = [s componentsSeparatedByString:@"="];
+        if([pair count] != 2) continue;
+        
+        NSString *key = pair[0];
+        NSString *value = pair[1];
+        
+        md[key] = value;
+    }
+    
+    return md;
 }
 
 #pragma mark - Core Data stack
