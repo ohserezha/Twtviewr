@@ -13,6 +13,8 @@
 #import "NewTweetViewController.h"
 #import "DataManager.h"
 
+#warning Uses bad solution for messing with tweet's data switching from dictionary to nsmanagedobject
+
 @interface MainViewController () <NewTweetViewControllerDelegate>
 @property (strong, nonatomic) NSArray *tweetsArray;
 @property (assign, nonatomic) BOOL networkAvailable;
