@@ -8,6 +8,7 @@
 
 #import "ApiManager.h"
 #import <Social/Social.h>
+#import "Reachability.h"
 
 
 NSString *const kTwitterAccountIsReadyNotification = @"kTwitterAccountIsReadyNotification";
@@ -111,5 +112,13 @@ static NSString *const API_SECRET = @"XwNBgzVvS6ln1185FXCfeYahMY08yYYjey5egwmtCK
 
 }
 
+- (BOOL)isConnectedToNetwork {
+    Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
+    if (networkStatus == NotReachable) {
+        return NO;
+    }
+    return YES;
+}
 
 @end

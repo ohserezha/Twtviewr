@@ -22,7 +22,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     if (![SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]) {
-        [self showLoginScreen];
+        if (![[ApiManager sharedInstance] isConnectedToNetwork]){
+            [self showLoginScreen];
+        }
     } else {
         NSNotification *notification = [NSNotification notificationWithName:kTwitterAccountIsReadyNotification object:nil];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -89,6 +91,7 @@
 }
 
 - (void)showLoginScreen {
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     LoginViewController *viewController = (LoginViewController *)[storyboard instantiateViewControllerWithIdentifier:@"LoginScene"];
     [self.window makeKeyAndVisible];

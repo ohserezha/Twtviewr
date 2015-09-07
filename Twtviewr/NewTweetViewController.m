@@ -42,6 +42,15 @@
 }
 
 - (void)sendTweetWithText:(NSString *)text {
+    if (![[ApiManager sharedInstance] isConnectedToNetwork]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No internet"
+                                                        message:@"You can't post without internet connection"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
     if (text.length > 140) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Too long message"
                                                         message:@"Message has to contain less than 140 symbols"

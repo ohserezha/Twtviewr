@@ -25,4 +25,5 @@ extern NSString * const kTwitterAccountIsReadyNotification;
 - (void)loginViaWebView:(UIWebView *)webView withKey:(NSString *)key andSecret:(NSString *)secret;
 - (void)loginViaWebView;
 - (void)postTweetWithStatus:(NSString *)statusText onCompletion:(void(^)(void))completion onFailure:(void(^)(NSError *error))failure;
+- (BOOL)isConnectedToNetwork;
 @end

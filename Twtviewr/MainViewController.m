@@ -11,9 +11,11 @@
 #import "DetailsViewController.h"
 #import "ApiManager.h"
 #import "NewTweetViewController.h"
+#import "DataManager.h"
 
 @interface MainViewController () <NewTweetViewControllerDelegate>
-@property (strong, nonatomic) NSMutableArray *tweetsArray;
+@property (strong, nonatomic) NSArray *tweetsArray;
+@property (assign, nonatomic) BOOL networkAvailable;
 @end
 
 @implementation MainViewController
@@ -26,6 +28,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginWithBaseAccount) name:kTwitterAccountIsReadyNotification object:nil];
+    self.networkAvailable = [[ApiManager sharedInstance] isConnectedToNetwork];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -41,19 +44,29 @@
 - (void)loadTweets {
     // here we determine where from to load web or local
     // will implement saving on load or applicationwillenterbackgrnd
-    ApiManager *apiMgr = [ApiManager sharedInstance];
-    [apiMgr getFeedForUserAccount:apiMgr.twitterAccount onCompletion:^(NSArray *array) {
-        self.tweetsArray = [NSMutableArray arrayWithArray:array];
+    if (self.networkAvailable) {
+        ApiManager *apiMgr = [ApiManager sharedInstance];
+        [apiMgr getFeedForUserAccount:apiMgr.twitterAccount onCompletion:^(NSArray *array) {
+            self.tweetsArray = [NSArray arrayWithArray:array];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+            [[DataManager sharedInstance] putTweetsArray:self.tweetsArray];
+        } onFailure:^(NSError *error) {
+            NSLog(@"error getting user's feed occured %@", [error localizedDescription]);
+        }];
+    } else {
+        // fetch data from database
+        self.tweetsArray = [[DataManager sharedInstance] fetchTweetsArrayAscendingID];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
-    } onFailure:^(NSError *error) {
-        
-    }];
+    }
 }
 
 - (void)loginWithBaseAccount {
     [[ApiManager sharedInstance] loginViaBaseTwitterAccountWithCompletionBlock:^{
+        NSLog(@"loggin %d network", self.networkAvailable);
         [self loadTweets];
     }];
 }
@@ -79,19 +92,33 @@
     }
     NSInteger idx = indexPath.row;
     cell.tag = idx;
-    NSDictionary *tweet = self.tweetsArray[idx];
-    if (tweet) {
-        NSURL *imageURL = [NSURL URLWithString:tweet[@"user"][@"profile_image_url"]];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-            NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-            UIImage *image = [UIImage imageWithData:imageData];
+    
+    if (self.networkAvailable) {
+        NSDictionary *tweet = self.tweetsArray[idx];
+        if (tweet) {
+            NSURL *imageURL = [NSURL URLWithString:tweet[@"user"][@"profile_image_url"]];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+                UIImage *image = [UIImage imageWithData:imageData];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    cell.imageView.image = image;
+                    [cell setNeedsLayout];
+                });
+            });
+            cell.textLabel.text = tweet[@"user"][@"screen_name"];
+            cell.detailTextLabel.text = tweet[@"text"];
+        }
+    } else {
+        Tweet *tweet = self.tweetsArray[idx];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIImage *image = [UIImage imageWithData:tweet.profileImage];
             dispatch_async(dispatch_get_main_queue(), ^{
                 cell.imageView.image = image;
                 [cell setNeedsLayout];
             });
         });
-        cell.textLabel.text = tweet[@"user"][@"name"];
-        cell.detailTextLabel.text = tweet[@"text"];
+        cell.textLabel.text = tweet.username;
+        cell.detailTextLabel.text = tweet.text;
     }
     
     return cell;
@@ -108,6 +135,8 @@
                                           otherButtonTitles:nil];
     [alert show];
 }
+
+
 
 /*
 // Override to support conditional editing of the table view.
@@ -152,7 +181,11 @@
     if ([segue.identifier isEqualToString:@"ShowDetailsSegue"]) {
         DetailsViewController *detailsVC = (DetailsViewController *)[segue destinationViewController];
         NSInteger selectedRowIndex = [self.tableView indexPathForSelectedRow].row;
-        detailsVC.tweet = self.tweetsArray[selectedRowIndex];
+        if ([self.tweetsArray[selectedRowIndex] isKindOfClass:[NSDictionary class]]) {
+            detailsVC.tweet = self.tweetsArray[selectedRowIndex];
+        } else {
+            detailsVC.tweet = [self convertTweetIntoTweetDict:self.tweetsArray[selectedRowIndex]];
+        }
     } else if ([segue.identifier isEqualToString:@"NewTweetSegue"]) {
         NewTweetViewController *newTweetVC = (NewTweetViewController *)[segue destinationViewController];
         newTweetVC.delegate = self;
@@ -160,4 +193,15 @@
 }
 
 
+#pragma mark - Helpers
+
+- (NSDictionary *)convertTweetIntoTweetDict:(Tweet *)tweet {
+    NSDictionary *tweetDict = @{@"created_at":tweet.createdAt,
+                                @"id":tweet.idn,
+                                @"in_reply_to_screen_name":tweet.inReplyTo ? tweet.inReplyTo : @"",
+                                @"text":tweet.text,
+                                @"user": @{@"profile_image_url":@"empty",},
+                                           @"screen_name":tweet.username};
+    return tweetDict;
+}
 @end

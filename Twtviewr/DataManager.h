@@ -11,9 +11,7 @@
 
 @interface DataManager : NSObject
 + (DataManager *)sharedInstance;
-- (Tweet *)fetchTweetWithID:(NSInteger)idn;
-- (NSArray *)fetchTweetsCount:(NSInteger)count ascendingID:(BOOL)isAscending;
-- (void)putNewTweetIntoDatabase:(Tweet *)tweet;
-- (void)addTweetsArray:(NSArray *)tweetsArray;
+- (NSArray *)fetchTweetsArrayAscendingID;
+- (void)putTweetsArray:(NSArray *)tweetsArray;
 - (void)clearDataBase;
 @end

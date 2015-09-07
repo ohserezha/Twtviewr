@@ -7,6 +7,7 @@
 //
 
 #import "DetailsViewController.h"
+#import "Tweet.h"
 
 @interface DetailsViewController ()
 
@@ -17,11 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    if (self.tweet) {
-        self.textView.text = [self.tweet description];
-    }
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"We could put useful information from tweet here but the task sounds like Отобразить всю доступную информацию по твиту, so we just put a tweet dictionary's description" delegate:nil cancelButtonTitle:@"Oookaaay" otherButtonTitles:nil];
-    [alert show];
+    self.textView.text = [NSString stringWithFormat:@"%@\nIn reply to: %@\n\n%@", self.tweet[@"created_at"], self.tweet[@"in_reply_to_screen_name"], self.tweet[@"text"]];
 }
 
 - (void)didReceiveMemoryWarning {

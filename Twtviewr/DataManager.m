@@ -10,8 +10,9 @@
 #import "AppDelegate.h"
 #import "Tweet.h"
 
+#define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
+
 @interface DataManager ()
-@property (strong, nonatomic) NSManagedObjectContext *context;
 @end
 
 @implementation DataManager
@@ -25,47 +26,62 @@
     return sharedInstance;
 }
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        if (appDelegate.managedObjectContext)
-            self.context = appDelegate.managedObjectContext;
+// returns array of NSMANAGEDOBJECTs
+- (NSArray *)fetchTweetsArrayAscendingID {
+    AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
+    NSManagedObjectContext *context = appdelegate.managedObjectContext;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Tweet"];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"idn" ascending:NO selector:@selector(localizedStandardCompare:)];
+    NSArray *sortDescription = [[NSArray alloc] initWithObjects:sort, nil];
+    [fetchRequest setSortDescriptors:sortDescription];
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        NSLog(@"error fetching tweetsArray from database occured %@", [error localizedDescription]);
     }
-    return self;
-}
-
-- (Tweet *)fetchTweetWithID:(NSInteger)idn {
-    Tweet *tweet = nil;
-    
-    return tweet;
-}
-
-- (NSArray *)fetchTweetsCount:(NSInteger)count ascendingID:(BOOL)isAscending {
-    NSArray *array = [NSArray array];
-    
-    return array;
-}
-
-- (void)putNewTweetIntoDatabase:(Tweet *)tweet {
-    
+    if (fetchedObjects.count > 0) {
+        return fetchedObjects;
+    }
+    return nil;
 }
 
 - (void)clearDataBase {
     AppDelegate *appdelegate = [UIApplication sharedApplication].delegate;
-    self.context = appdelegate.managedObjectContext;
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:self.context];
+    NSManagedObjectContext *context = appdelegate.managedObjectContext;
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Tweet" inManagedObjectContext:context];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     request.entity = entity;
     NSError *error;
-    NSArray *results = [self.context executeFetchRequest:request error:&error];
+    NSArray *results = [context executeFetchRequest:request error:&error];
     for (Tweet *t in results) {
-        [self.context deleteObject:t];
+        [context deleteObject:t];
     }
-    [self.context save:&error];
+    [context save:&error];
 }
 
-- (void)addTweetsArray:(NSArray *)tweetsArray {
-    
+// put array of NSDICTIONARYs
+- (void)putTweetsArray:(NSArray *)tweetsArray {
+    if (tweetsArray) {
+        [self clearDataBase];
+            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+            NSManagedObjectContext *context = appDelegate.managedObjectContext;
+            for (NSDictionary *tweetDict in tweetsArray) {
+                Tweet *tweet = [NSEntityDescription insertNewObjectForEntityForName:@"Tweet" inManagedObjectContext:context];
+                tweet.createdAt = tweetDict[@"created_at"];
+                tweet.idn = tweetDict[@"id"];
+                tweet.inReplyTo = NULL_TO_NIL(tweetDict[@"in_reply_to_screen_name"]);
+                NSURL *imageURL = [NSURL URLWithString:tweetDict[@"user"][@"profile_image_url"]];
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                    tweet.profileImage = [NSData dataWithContentsOfURL:imageURL];;
+                });
+                tweet.text = tweetDict[@"text"];
+                tweet.username = tweetDict[@"user"][@"screen_name"];
+                NSError *error;
+                [context save:&error];
+                if (error) {
+                    NSLog(@"error saving context in addTweetsArray: %@", [error localizedDescription]);
+                }
+            }
+    }
 }
 @end
